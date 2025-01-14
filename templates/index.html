@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>House Price Prediction and Data Analysis</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <h1>House Price Prediction & Data Analysis</h1>
+            <p>Upload a CSV to analyze data or input house details to predict the price.</p>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <!-- House Price Prediction Section -->
+            <section class="prediction-section">
+                <h2>House Price Prediction</h2>
+                <form method="POST" action="/predict">
+                    <label for="size">Size (sq ft):</label>
+                    <input type="number" name="size" required placeholder="Enter the size of the house" step="any">
+
+                    <label for="bedrooms">Number of Bedrooms:</label>
+                    <input type="number" name="bedrooms" required placeholder="Enter number of bedrooms" step="1">
+
+                    <button type="submit">Predict Price</button>
+                </form>
+
+                {% if prediction_text %}
+                    <h3>{{ prediction_text }}</h3>
+                {% endif %}
+            </section>
+
+            <!-- Upload CSV for Data Analysis Section -->
+            <section class="csv-upload-section">
+                <h2>Upload CSV for Data Analysis</h2>
+                <form method="POST" enctype="multipart/form-data" action="/upload">
+                    <label for="file">Choose a CSV file:</label>
+                    <input type="file" name="file" accept=".csv" required>
+
+                    <button type="submit">Upload and Analyze</button>
+                </form>
+
+            {% if plot_urls %}
+                <h3>Generated Plots:</h3>
+                <div class="plot-container">
+                    <h4>Scatter Plot:</h4>
+                    <img src="data:image/png;base64,{{ plot_urls.scatter }}" alt="Scatter Plot" class="data-plot">
+                    <h4>Bar Chart:</h4>
+                    <img src="data:image/png;base64,{{ plot_urls.bar }}" alt="Bar Chart" class="data-plot">
+                    <h4>Pie Chart:</h4>
+                    <img src="data:image/png;base64,{{ plot_urls.pie }}" alt="Pie Chart" class="data-plot">
+                </div>
+            {% endif %}
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 DataAN. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>
